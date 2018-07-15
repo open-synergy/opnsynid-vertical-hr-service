@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<menuitem 
+    id="res_partner_job_position_menu"
+    name="Jobs"
+    parent="hr_service_app.hr_service_configuration_menu"
+    action="partner_contact_job_position.res_partner_job_position_action"
+    sequence="1"/>
+
+</data>
+</openerp>
