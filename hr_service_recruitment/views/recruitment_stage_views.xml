@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+<record id="hr_service_recruitment_stage_view_tree" model="ir.ui.view">
+    <field name="name">hr_service.recruitment_stage tree</field>
+    <field name="model">hr_service.recruitment_stage</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="default_sequence"/>
+            <field name="state"/>
+        </tree>
+    </field>
+</record>
+
+<record id="hr_service_recruitment_stage_view_form" model="ir.ui.view">
+    <field name="name">hr_service.recruitment_stage form</field>
+    <field name="model">hr_service.recruitment_stage</field>
+    <field name="arch" type="xml">
+        <form>
+            <group name="group_1" colspan="4" col="2">
+                <field name="name"/>
+                <field name="default_sequence"/>
+                <field name="state"/>
+                <field name="active"/>
+                <field name="description"/>
+            </group>
+        </form>
+    </field>
+</record>
+
+
+<record id="hr_service_recruitment_stage_action" model="ir.actions.act_window">
+    <field name="name">Recruitment Stage</field>
+    <field name="res_model">hr_service.recruitment_stage</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem 
+    id="hr_service_recruitment_stage_menu"
+    name="Stage"
+    parent="hr_service_recruitment_configuration_menu"
+    action="hr_service_recruitment_stage_action"
+    sequence="1"/>
+</data>
+</openerp>
