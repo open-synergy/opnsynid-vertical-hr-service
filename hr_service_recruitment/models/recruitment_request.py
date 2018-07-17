@@ -20,40 +20,106 @@ class RecruitmentRequest(models.Model):
             request.accepted_applicant_count = accepted_applicant_count
             request.rejected_applicant_count = rejected_applicant_count
 
+    @api.model
+    def _default_company_id(self):
+        return self.env.user.company_id
+
 
     name = fields.Char(
         string="# Request",
         default="/",
+        required=True,
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
+    company_id = fields.Many2one(
+        string="Company",
+        comodel_name="res.company",
+        required=True,
+        translate=False,
+        default=lambda self: self._default_company_id(),
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+    )
     date_request = fields.Datetime(
         string="Date Request",
         required=True,
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     date_deadline = fields.Datetime(
         string="Date Deadline",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     partner_id = fields.Many2one(
         string="Customer",
         comodel_name="res.partner",
         required=True,
-        domain="[('is_company','=',True),('parent_id', '=', False)]"
+        domain="[('is_company','=',True),('parent_id', '=', False)]",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     request_by_id = fields.Many2one(
         string="Request By",
         comodel_name="res.partner",
         required=True,
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     job_id = fields.Many2one(
         string="Position",
         comodel_name="res.partner.job_position",
         required=True,
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     job_location_id = fields.Many2one(
         string="Job Placement",
         comodel_name="res.partner",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     no_of_recruitment = fields.Integer(
         string="Expected New Employee",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     applicant_ids = fields.One2many(
         string="Applicants",
@@ -79,6 +145,12 @@ class RecruitmentRequest(models.Model):
         string="Stages",
         comodel_name="hr_service.recruitment_request_stage",
         inverse_name="request_id",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     required_skill_ids = fields.Many2many(
         string="Required Skill",
@@ -86,6 +158,12 @@ class RecruitmentRequest(models.Model):
         relation="rel_recruitment_request_required_skill",
         column1="request_id",
         column2="skill_id",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     nice_to_have_skill_ids = fields.Many2many(
         string="Nice to Have Skill",
@@ -93,20 +171,50 @@ class RecruitmentRequest(models.Model):
         relation="rel_recruitment_request_nice_to_have_skill",
         column1="request_id",
         column2="skill_id",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     min_year_experience = fields.Float(
         string="Minimum Years Experiences",
         required=False,
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     salary_currency_id = fields.Many2one(
         string="Salary Currency",
         comodel_name="res.currency",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     min_salary = fields.Float(
         string="Min. Salary",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     max_salary = fields.Float(
         string="Max. Salary",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     benefit_ids = fields.Many2many(
         string="Benefits",
@@ -114,6 +222,12 @@ class RecruitmentRequest(models.Model):
         relation="rel_recruitment_request_2_benefit",
         column1="request_id",
         column2="benefit_id",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
         )
     note = fields.Text(
         string="Note",
@@ -139,57 +253,58 @@ class RecruitmentRequest(models.Model):
 
     @api.multi
     def action_approve(self):
-        #TODO:
         for recruitment in self:
             recruitment.write(self._prepare_approve_data())
 
     @api.multi
     def action_done(self):
-        #TODO:
         for recruitment in self:
             recruitment.write(self._prepare_done_data())
 
     @api.multi
     def action_cancel(self):
-        #TODO:
         for recruitment in self:
             recruitment.write(self._prepare_cancel_data())
 
     @api.multi
     def action_restart(self):
-        #TODO:
         for recruitment in self:
             recruitment.write(self._prepare_restart_data())
 
     @api.multi
     def _prepare_confirm_data(self):
-        #TODO
         self.ensure_one()
-        return {}
+        return {
+            "state": "confirm",
+            }
 
     @api.multi
     def _prepare_approve_data(self):
-        #TODO
         self.ensure_one()
-        return {}
+        return {
+            "state": "approve",
+            }
 
     @api.multi
     def _prepare_done_data(self):
-        #TODO
         self.ensure_one()
-        return {}
+        return {
+            "state": "done",
+                }
 
     @api.multi
     def _prepare_cancel_data(self):
-        #TODO
         self.ensure_one()
-        return {}
+        return {
+            "state": "cancel",
+            }
 
     @api.multi
     def _prepare_restart_data(self):
-        #TODO
         self.ensure_one()
-        return {}
+        return {
+            "state": "draft",
+            }
 
     @api.multi
     def _prepare_create_data(self):
@@ -208,9 +323,16 @@ class RecruitmentRequest(models.Model):
 
     @api.multi
     def _get_sequence(self):
-        #TODO
-        self.sensure_one()
-        pass
+        self.ensure_one()
+        company = self.company_id
+
+        if company.recruitment_request_sequence_id:
+            result = company.recruitment_request_sequence_id
+        else:
+            result = self.env.ref(
+                "hr_service_recruitment.sequence_hr_service_"
+                "recruitment_request")
+        return result
 
     @api.model
     def create(self, values):
@@ -221,8 +343,35 @@ class RecruitmentRequest(models.Model):
 
     @api.onchange("partner_id")
     def onchange_request_by_id(self):
-        #TODO
-        pass
+        self.request_by_id = False
+        domain = {
+            "request_by_id": [
+                ("id", "=", 0),
+                ],
+            }
+        if self.partner_id:
+            domain["request_by_id"] = [
+                ("commercial_partner_id", "=", self.partner_id.id),
+                ("is_company", "=", False),
+                ("type", "=", "contact"),
+                ]
+        return {"domain": domain}
+
+    @api.onchange("partner_id")
+    def onchange_job_location_id(self):
+        self.job_location_id = False
+        domain = {
+            "job_location_id": [
+                ("id", "=", 0),
+                ],
+            }
+        if self.partner_id:
+            domain["job_location_id"] = [
+                ("commercial_partner_id", "=", self.partner_id.id),
+                ("is_company", "=", False),
+                ("type", "!=", "contact"),
+                ]
+        return {"domain": domain}
 
     @api.constrains("date_request", "date_deadline")
     def _check_date(self):

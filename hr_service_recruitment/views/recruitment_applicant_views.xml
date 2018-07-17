@@ -107,7 +107,7 @@
     <field name="name">Recuitment Applicant</field>
     <field name="res_model">hr_service.recruitment_applicant</field>
     <field name="view_type">form</field>
-    <field name="view_mode">tree,form</field>
+    <field name="view_mode">kanban,tree,form</field>
     <field name="search_view_id" ref="hr_service_recruitment_applicant_view_search"/>
 </record>
 
