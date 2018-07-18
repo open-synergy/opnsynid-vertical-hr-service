@@ -67,6 +67,6 @@ class RecruitmentApplicant(models.Model):
 
         return stages, None
 
-    _groups_by_full = {
+    _group_by_full = {
         "stage_id": _stage_groups,
-        }
+    }

@@ -17,6 +17,7 @@
         "partner_skill",
     ],
     "data": [
+        "security/ir.model.access.csv",
         "data/ir_sequence_data.xml",
         "menu.xml",
         "views/hr_service_config_setting_views.xml",

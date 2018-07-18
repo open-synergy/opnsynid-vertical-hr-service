@@ -27,11 +27,22 @@
             <field name="state"/>
             <templates>
                 <t t-name="kanban-box">
-                    <div class="oe_kanban_box oe_kanban_color_border">
-                        <div class="oe_kanban_content">
-                            <div class="oe_employee_details">
-                                <b><field name="name"/></b>
-                                <field name="applicant_id"/>
+                    <t t-set="border">oe_kanban_color_black</t>
+                    <div tattf-class="oe_kanban_color_#{kanban_getcolor(0)} oe_kanban_card oe_kanban_global_click">
+                        <div class="oe_kanban_box oe_kanban_color_border">
+                            <div class="oe_kanban_content">
+                                <div>
+                                    <b><field name="name"/></b>
+                                </div>
+                                <div>
+                                    # Request: <field name="request_id"/>
+                                </div>
+                                <div>
+                                    Applicant: <field name="applicant_id"/>
+                                </div>
+                                <div>
+                                    Date Applied: <field name="date_applied"/>
+                                </div>
                             </div>
                         </div>
                     </div>
