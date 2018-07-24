@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+<record id="hr_service_recruitment_benefit_view_tree" model="ir.ui.view">
+    <field name="name">hr_service.recruitment_benefit tree</field>
+    <field name="model">hr_service.recruitment_benefit</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+        </tree>
+    </field>
+</record>
+
+<record id="hr_service_recruitment_benefit_view_form" model="ir.ui.view">
+    <field name="name">hr_service.recruitment_benefit form</field>
+    <field name="model">hr_service.recruitment_benefit</field>
+    <field name="arch" type="xml">
+        <form>
+            <group name="group_1" colspan="4" col="2">
+                <field name="name"/>
+                <field name="active"/>
+                <field name="description"/>
+            </group>
+        </form>
+    </field>
+</record>
+
+
+<record id="hr_service_recruitment_benefit_action" model="ir.actions.act_window">
+    <field name="name">Recruitment Benefit</field>
+    <field name="res_model">hr_service.recruitment_benefit</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem 
+    id="hr_service_recruitment_benefit_menu"
+    name="Benefit"
+    parent="hr_service_recruitment_configuration_menu"
+    action="hr_service_recruitment_benefit_action"
+    sequence="2"/>
+</data>
+</openerp>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2016 OpenSynergy Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+<data>
+
+<menuitem 
+    id="hr_service_recruitment_main_menu"
+    name="Recuitment Service"
+    sequence="1"
+    parent="hr_service_app.hr_service_main_menu"
+    />
+
+<menuitem 
+    id="hr_service_recruitment_report_menu"
+    name="Recruitment Service"
+    sequence="1"
+    parent="hr_service_app.hr_service_report_menu"
+    />
+
+<menuitem 
+    id="hr_service_recruitment_configuration_menu"
+    name="Recruitment Service"
+    sequence="2"
+    parent="hr_service_app.hr_service_configuration_menu"
+    />
+
+</data>
+</openerp>
