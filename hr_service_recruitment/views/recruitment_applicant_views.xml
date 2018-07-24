@@ -96,6 +96,7 @@
     <field name="arch" type="xml">
         <search>
             <field name="name"/>
+            <field name="request_id"/>
             <field name="state"/>
             <group name="group_state" string="State">
                 <filter name="filter_draft" string="Draft" domain="[('state','=','draft')]"/>
@@ -115,7 +116,7 @@
 </record>
 
 <record id="hr_service_recruitment_applicant_action" model="ir.actions.act_window">
-    <field name="name">Recuitment Applicant</field>
+    <field name="name">Recruitment Applicant</field>
     <field name="res_model">hr_service.recruitment_applicant</field>
     <field name="view_type">form</field>
     <field name="view_mode">kanban,tree,form</field>
@@ -130,12 +131,14 @@
     sequence="2"/>
 
 <record id="hr_service_recruitment_applicant_by_request_action" model="ir.actions.act_window">
-    <field name="name">Recuitment Applicant</field>
+    <field name="name">Recruitment Applicant</field>
     <field name="res_model">hr_service.recruitment_applicant</field>
     <field name="view_type">form</field>
     <field name="view_mode">kanban,tree,form</field>
-    <field name="domain">[('request_id','=',active_id)]</field>
-    <field name="context">{'default_request_id':active_id, 'search_default_grp_stage':1}</field>
+    <field name="context">{
+        'search_default_request_id': [active_id],
+        'default_request_id': active_id
+    }</field>
     <field name="search_view_id" ref="hr_service_recruitment_applicant_view_search"/>
 </record>
 

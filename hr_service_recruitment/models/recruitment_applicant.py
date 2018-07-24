@@ -2,7 +2,8 @@
 # Copyright 2018 OpenSynergy Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import models, fields, api
+from openerp import models, fields, api, _
+from openerp.exceptions import except_orm
 
 
 class RecruitmentApplicant(models.Model):
@@ -63,7 +64,28 @@ class RecruitmentApplicant(models.Model):
 
     @api.multi
     def _stage_groups(self, domain, **kwargs):
-        stages = self.env["hr_service.recruitment_stage"].search([]).name_get()
+        obj_request =\
+            self.env["hr_service.recruitment_request"]
+        stage_ids = []
+        criteria = []
+
+        request_id =\
+            self._context.get('default_request_id', False)
+
+        if request_id:
+            criteria_request = [
+                ("id", "=", request_id)
+            ]
+            request = obj_request.search(criteria_request)
+            if request:
+                for stage in request.stage_ids:
+                    stage_ids.append(stage.stage_id.id)
+                criteria = [
+                    ("id", "in", stage_ids)
+                ]
+        stages =\
+            self.env["hr_service.recruitment_stage"].search(
+                criteria).name_get()
 
         return stages, None
 
