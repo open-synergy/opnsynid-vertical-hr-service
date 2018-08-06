@@ -10,6 +10,7 @@
             <field name="request_id"/>
             <field name="applicant_id"/>
             <field name="date_applied"/>
+            <field name="stage_id"/>
             <field name="state"/>
         </tree>
     </field>
@@ -19,7 +20,7 @@
     <field name="name">hr_service.recruitment_applicant kanban</field>
     <field name="model">hr_service.recruitment_applicant</field>
     <field name="arch" type="xml">
-        <kanban default_group_by="stage_id">
+        <kanban default_group_by="stage_id" create="false">
             <field name="name"/>       
             <field name="request_id"/>
             <field name="applicant_id"/>
@@ -58,6 +59,8 @@
     <field name="arch" type="xml">
         <form>
             <header>
+                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="new"/>
+                <field name="state" invisible="1"/>
                 <field name="stage_id" widget="statusbar" clickable="True"/>
             </header>
             <sheet>

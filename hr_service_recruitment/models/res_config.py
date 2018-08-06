@@ -13,3 +13,8 @@ class ResConfig(models.TransientModel):
         comodel_name="ir.sequence",
         related="company_id.recruitment_request_sequence_id",
         )
+    recruitment_applicant_sequence_id = fields.Many2one(
+        string="Recruitment Applicant Sequence",
+        comodel_name="ir.sequence",
+        related="company_id.recruitment_applicant_sequence_id",
+        )

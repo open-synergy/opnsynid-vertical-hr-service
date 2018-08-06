@@ -83,6 +83,17 @@
                         </group>
                     </page>
                     <page name="stage" string="Stages">
+                        <group name="stage1" colspan="4" col="2">
+                            <field name="new_stage_id"/>
+                            <field name="done_stage_ids" widget="many2many_tags"/>
+                            <field name="cancel_stage_ids" widget="many2many_tags"/>
+                        </group>
+                        <field name="open_stage_ids" nolabel="1" colspan="4" groups="base.group_system">
+                            <tree>
+                                <field name="sequence" widget="handle"/>
+                                <field name="stage_id"/>
+                            </tree>
+                        </field>
                         <field name="stage_ids" nolabel="1" colspan="4">
                             <tree editable="top">
                                 <field name="sequence" widget="handle"/>
@@ -92,6 +103,7 @@
                     </page>
                     <page name="applicant" string="Applicants">
                         <group name="applicant1" colspan="4" col="2">
+                            <field name="applicant_sequence_id"/>
                             <field name="applicant_count"/>
                             <field name="accepted_applicant_count"/>
                             <field name="rejected_applicant_count"/>

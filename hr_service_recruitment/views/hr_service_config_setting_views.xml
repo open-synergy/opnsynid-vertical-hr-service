@@ -16,10 +16,12 @@
             <group name="recruitment_config">
                 <label for="id" string="General"/>
                 <div>
-                    <div>
-                        <label for="id" string="Sequence" class="oe_inline"/>
-                        <field name="recruitment_request_sequence_id" class="on_inline"/>
-                    </div>
+                    <label for="id" string="Request Sequence" class="oe_inline"/>
+                    <field name="recruitment_request_sequence_id" class="on_inline"/>
+                </div>
+                <div>
+                    <label for="id" string="Applicant Sequence" class="oe_inline"/>
+                    <field name="recruitment_applicant_sequence_id" class="on_inline"/>
                 </div>
             </group>
         </xpath>

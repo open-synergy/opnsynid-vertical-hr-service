@@ -3,7 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from openerp import models, fields, api, _
-from openerp.exceptions import except_orm
+from openerp.exceptions import Warning as UserError
+
 
 
 class RecruitmentApplicant(models.Model):
@@ -92,3 +93,78 @@ class RecruitmentApplicant(models.Model):
     _group_by_full = {
         "stage_id": _stage_groups,
     }
+
+    @api.model
+    def create(self, values):
+        _super = super(RecruitmentApplicant, self)
+        result = _super.create(values)
+        result.write(result._prepare_create_data())
+        return result
+
+    @api.multi
+    def _prepare_create_data(self):
+        self.ensure_one()
+        result = {}
+        if self.name == "/":
+            result.update({"name": self._create_sequence()})
+        return result
+
+    @api.multi
+    def _create_sequence(self):
+        self.ensure_one()
+        name = self.env["ir.sequence"].\
+            next_by_id(self._get_sequence().id) or "/"
+        return name
+
+    @api.multi
+    def _get_sequence(self):
+        self.ensure_one()
+
+        result = self.request_id._get_applicant_sequence()
+        return result
+
+    @api.multi
+    def _prepare_confirm_data(self):
+        self.ensure_one()
+        return {
+            "stage_id": self._get_first_open_stage().id,
+            }
+
+    @api.multi
+    def _prepare_open_data(self):
+        self.ensure_one()
+        return {
+            "stage_id": self._get_first_open_stage().id,
+            }
+
+    @api.multi
+    def action_confirm(self):
+        for applicant in self:
+            applicant.write(self._prepare_confirm_data())
+
+    @api.multi
+    def action_next_open_stage(self):
+        #TODO
+        for applicant in self:
+            applicant.write(self._prepare_open_data())
+
+    @api.multi
+    def action_previous_open_stage(self):
+        #TODO
+        for applicant in self:
+            applicant.write(self._prepare_open_data())
+
+    @api.multi
+    def _get_first_open_stage(self):
+        self.ensure_one()
+
+        open_stages = self.request_id.\
+            open_stage_ids
+
+        if len(open_stages) == 0:
+            raise UserError(_("No stage for open state"))
+
+        return open_stages[0].stage_id
+
+
+

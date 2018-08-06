@@ -11,6 +11,27 @@ class RecruitmentRequest(models.Model):
     _description = "HR Service - Recruitment Request"
 
     @api.multi
+    @api.depends("stage_ids")
+    def _compute_done_stages(self):
+        for request in self:
+            stage_ids = []
+            for stage in request.stage_ids.filtered(
+                    lambda r: r.stage_id.state == "done"):
+                stage_ids.append(stage.stage_id.id)
+            request.done_stage_ids = [(6,0,stage_ids)]
+
+    @api.multi
+    @api.depends("stage_ids")
+    def _compute_cancel_stages(self):
+        for request in self:
+            stage_ids = []
+            for stage in request.stage_ids.filtered(
+                    lambda r: r.stage_id.state == "cancel"):
+                stage_ids.append(stage.stage_id.id)
+            request.cancel_stage_ids = [(6,0,stage_ids)]
+
+
+    @api.multi
     @api.depends("applicant_ids", "applicant_ids.stage_id")
     def _compute_applicant(self):
         for request in self:
@@ -121,6 +142,16 @@ class RecruitmentRequest(models.Model):
             ],
         },
         )
+    applicant_sequence_id = fields.Many2one(
+        string="Applicant Sequence",
+        comodel_name="ir.sequence",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+        )
     applicant_ids = fields.One2many(
         string="Applicants",
         comodel_name="hr_service.recruitment_applicant",
@@ -145,6 +176,55 @@ class RecruitmentRequest(models.Model):
         string="Stages",
         comodel_name="hr_service.recruitment_request_stage",
         inverse_name="request_id",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+        )
+    open_stage_ids = fields.One2many(
+        string="Stages",
+        comodel_name="hr_service.recruitment_request_stage",
+        inverse_name="request_id",
+        readonly=True,
+        domain=[('stage_id.state','=','open')],
+        )
+    new_stage_id = fields.Many2one(
+        string="New Stage",
+        comodel_name="hr_service.recruitment_stage",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+        )
+    done_stage_ids = fields.Many2many(
+        string="Done Stages",
+        domain="[('state','=','done')]",
+        comodel_name="hr_service.recruitment_stage",
+        compute="_compute_done_stages",
+        store=True,
+        relation="rel_hr_service_recruitment_2_done_stage",
+        column1="request_id",
+        column2="stage_id",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+        )
+    cancel_stage_ids = fields.Many2many(
+        string="Cancel Stages",
+        domain="[('state','=','cancel')]",
+        comodel_name="hr_service.recruitment_stage",
+        compute="_compute_cancel_stages",
+        store=True,
+        relation="rel_hr_service_recruitment_2_cancel_stage",
+        column1="request_id",
+        column2="stage_id",
         readonly=True,
         states={
             "draft": [
@@ -332,6 +412,16 @@ class RecruitmentRequest(models.Model):
             result = self.env.ref(
                 "hr_service_recruitment.sequence_hr_service_"
                 "recruitment_request")
+        return result
+
+    @api.multi
+    def _get_applicant_sequence(self):
+        self.ensure_one()
+
+        if self.applicant_sequence_id:
+            result = self.applicant_sequence_id
+        else:
+            result = self.company_id._get_applicant_sequence()
         return result
 
     @api.model
