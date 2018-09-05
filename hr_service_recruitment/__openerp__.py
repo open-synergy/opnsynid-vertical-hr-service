@@ -11,6 +11,9 @@
     "license": "AGPL-3",
     "depends": [
         "partner_contact_job_position",
+        "partner_job_level",
+        "partner_education_level",
+        "partner_field_of_work",
         "hr_service_app",
         "partner_app",
         "mail",
@@ -22,6 +25,7 @@
         "menu.xml",
         "views/hr_service_config_setting_views.xml",
         "views/recruitment_applicant_views.xml",
+        "views/recruitment_candidate_views.xml",
         "views/recruitment_request_views.xml",
         "views/recruitment_stage_views.xml",
         "views/recruitment_benefit_views.xml",

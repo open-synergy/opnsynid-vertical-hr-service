@@ -4,6 +4,7 @@
 
 from . import recruitment_applicant
 from . import recruitment_benefit
+from . import recruitment_candidate
 from . import recruitment_stage
 from . import recruitment_request
 from . import res_company
