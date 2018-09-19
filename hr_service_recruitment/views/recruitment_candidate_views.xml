@@ -32,7 +32,8 @@
                             <field name="expected_salary" widget="monetary" options="{'currency_field':'expected_salary_currency_id'}"/>
                         </group>
                         <group name="work_expectation_1_2" colspan="1" col="2">
-                            <field name="expected_field_of_work_id"/>
+                            <field name="expected_field_of_work_ids" widget="many2many_tags"/>
+                            <field name="expected_location_ids" widget="many2many_tags"/>
                             <field name="expected_job_level_id"/>
                             <field name="expected_job_id"/>
                         </group>
@@ -126,7 +127,7 @@
     <field name="act_window_id" ref="hr_service_recruitment_candidate_action"/>
 </record>
 
-<menuitem 
+<menuitem
     id="hr_service_recruitment_candidate_menu"
     name="Candidates"
     parent="hr_service_recruitment_main_menu"

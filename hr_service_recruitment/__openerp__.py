@@ -18,6 +18,8 @@
         "partner_app",
         "mail",
         "partner_skill",
+        "base_location",
+        "partner_contact_in_several_companies",
     ],
     "data": [
         "security/ir.model.access.csv",

@@ -27,10 +27,19 @@ class RecruitmentCandidate(models.Model):
     expected_salary = fields.Float(
         string="Expected Salary",
         )
+    # TODO: Remove
     expected_field_of_work_id = fields.Many2one(
         string="Expected Field of Work",
         comodel_name="partner.field_of_work",
         )
+
+    expected_field_of_work_ids = fields.Many2many(
+        string="Expected Field of Works",
+        comodel_name="partner.field_of_work",
+        relation="rel_candidate_2_field_of_work",
+        column1="candicate_id",
+        column2="field_of_work_id",
+    )
     expected_job_level_id = fields.Many2one(
         string="Expected Job Level",
         comodel_name="partner.job_level",
@@ -39,6 +48,13 @@ class RecruitmentCandidate(models.Model):
         string="Expected Job",
         comodel_name="res.partner.job_position",
         )
+    expected_location_ids = fields.Many2many(
+        string="Expected Locations",
+        comodel_name="res.better.zip",
+        relation="rel_candidate_2_city",
+        column1="candicate_id",
+        column2="city_id",
+    )
 
     @api.multi
     def onchange_type(self, is_company):
@@ -50,5 +66,3 @@ class RecruitmentCandidate(models.Model):
     @api.multi
     def onchange_state(self, state_id):
         return self.env["res.partner"].onchange_state(state_id)
-
-
